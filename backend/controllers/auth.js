@@ -57,10 +57,10 @@ exports.postLogin = (req, res, next) => {
                 currentUser = user;
                 const token = jwt.sign({
                     email: email,
-                    password: password
+                    userId: user._id
                 }, SECRET , { expiresIn: '3h'});
             
-                res.status(200).json({token: token, userId: currentUser._id.toString()});
+                res.status(200).json({token: token, userDetails: {id: currentUser._id, username: currentUser.username}});
             })
             .catch(err => {
                 const error = new Error('Cannot find user!');

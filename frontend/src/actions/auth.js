@@ -1,10 +1,10 @@
 import * as actionTypes from './actionTypes';
 
-export const setStatusToLogin = (userId, token) => {
+export const setStatusToLogin = (userDetails, token) => {
     return {
         type: actionTypes.SET_LOGIN_STATUS,
         payload: {
-            userId: userId,
+            userDetails: {...userDetails},
             token: token
         }
     }

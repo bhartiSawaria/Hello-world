@@ -5,28 +5,35 @@ import { connect } from 'react-redux';
 const initialState = {
     token: null,
     isAuth: false,
-    userId: null
+    userDetails: null
 }
 
 const reducer = (state = initialState, action) => {
     switch( action.type ){
         case actionTypes.SET_LOGIN_STATUS:
             localStorage.setItem('token', action.payload.token);
-            localStorage.setItem('userId', action.payload.userId);
-            console.log('logged in reducers');
-            return{
+            localStorage.setItem('userDetails', JSON.stringify(action.payload.userDetails));
+            const a = {
                 ...state,
                 isAuth: true,
-                userId: action.payload.userId,
+                userDetails: {...action.payload.userDetails},
+                token: action.payload.token
+            }
+            console.log('In reducer', a);
+            return {
+                ...state,
+                isAuth: true,
+                userDetails: {...action.payload.userDetails},
                 token: action.payload.token
             }
         case actionTypes.SET_LOGOUT_STATUS:
             localStorage.removeItem('token');
-            localStorage.removeItem('userId');
+            localStorage.removeItem('userDetails');
+            console.log('In reducer logout');
             return{
                 ...state,
                 isAuth: false,
-                userId: null,
+                userDetails: null,
                 token: null
             }
         default:

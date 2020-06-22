@@ -18,6 +18,13 @@ class Login extends Component{
         error: ''
     }
 
+    componentDidMount(){
+        if( this.props.isAuth ){
+          this.props.history.push('/');
+        }
+        console.log('YES');
+    }
+
     isAnyFieldEmpty = () => {
         const { email, password } = this.state.userInfo;
         return !(email.length && password.length);
@@ -60,7 +67,7 @@ class Login extends Component{
                     this.setState({error: result.data[0].msg});
                 }
                 else{
-                    this.props.setStatusToLogin(result.userId, result.token);
+                    this.props.setStatusToLogin(result.userDetails, result.token);
                     this.props.history.push('/');
                 }
                 // console.log('result is', result);
@@ -73,7 +80,6 @@ class Login extends Component{
     }
 
     render(){
-
         let error = null;
         if( this.state.error !== '' ){
             error = <p style={{color: 'red'}}>{this.state.error}</p>
@@ -81,7 +87,7 @@ class Login extends Component{
         return (
             <div className={classes.RootContainer}>
                 <Form>
-                    <Header as='h1' style={{marginBottom: '2rem'}}>LOGIN</Header>
+                    <h1 style={{marginBottom: '2rem'}}>LOGIN</h1>
 
                     <Form.Input
                         fluid
@@ -120,10 +126,16 @@ class Login extends Component{
     }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
     return {
-        setStatusToLogin: (userId, token) => dispatch(actionCreators.setStatusToLogin(userId, token))
+        isAuth: state.auth.isAuth
     }
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapDispatchToProps = dispatch => {
+    return {
+        setStatusToLogin: (userDetails, token) => dispatch(actionCreators.setStatusToLogin(userDetails, token))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

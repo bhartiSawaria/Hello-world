@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap');
+
 html{
   height: 100%;
 }
@@ -6,7 +8,8 @@ body {
   margin: 0;
   height: 100%;
   background-color: #eee;
-  overflow: hidden;
+  overflow: scroll;
+  font-family: 'Merriweather', serif;
 }
 
 code {

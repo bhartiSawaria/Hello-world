@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Form, Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import classes from './Signup.module.css';
 
@@ -16,7 +17,13 @@ class Signup extends Component{
             confirmPassword: ''
         },
         isLoading: false,
-        errors: ''
+        error: ''
+    }
+
+    componentDidMount(){
+        if( this.props.isAuth ){
+          this.props.history.push('/');
+        }
     }
 
     isAnyFieldEmpty = () => {
@@ -50,19 +57,19 @@ class Signup extends Component{
 
     isFormValid = () => {
         if(this.isAnyFieldEmpty()){
-            this.setState({errors: 'Please fill all the fields.'})
+            this.setState({error: 'Please fill all the fields.'})
             return false;
         }
         else if(!this.isNameValid()){
-            this.setState({errors: 'Name should atleast be 3 characters long.'});
+            this.setState({error: 'Name should atleast be 3 characters long.'});
             return false;
         }
         else if(!this.isPasswordValid()){
-            this.setState({errors: 'Password should atleast be 5 characters long.'});
+            this.setState({error: 'Password should atleast be 5 characters long.'});
             return false;
         }
         else if(!this.doesPasswordMatches()){
-            this.setState({errors: 'Password do not match.'});
+            this.setState({error: 'Password do not match.'});
             return false;
         }
         else{
@@ -71,7 +78,7 @@ class Signup extends Component{
     }
 
     formInputChangeHandler = (event) => {
-        this.setState({errors: ''});
+        this.setState({error: ''});
         const fieldName = event.target.name;
         const updatedUserInfo = {...this.state.userInfo};
         updatedUserInfo[event.target.name] = event.target.value;
@@ -98,7 +105,7 @@ class Signup extends Component{
             })
             .then(result => {
                 if( result.data ){
-                    this.setState({errors: result.data[0].msg});
+                    this.setState({error: result.data[0].msg});
                 }
                 console.log('result is', result);
                 this.props.history.push('/login');
@@ -113,13 +120,13 @@ class Signup extends Component{
     render(){
         let error = null;
         console.log(this.state);
-        if( this.state.errors !== '' ){
-            error = <p style={{color: 'red'}}>{this.state.errors}</p>
+        if( this.state.error !== '' ){
+            error = <p style={{color: 'red'}}>{this.state.error}</p>
         }
         return (
             <div className={classes.RootContainer}>
                 <Form>
-                    <Header as='h1' style={{marginBottom: '2rem'}}>SIGNUP</Header>
+                    <h1 style={{marginBottom: '2rem'}}>SIGNUP</h1>
                     <Form.Input
                         fluid
                         icon='user'
@@ -186,4 +193,10 @@ class Signup extends Component{
     }
 };
 
-export default Signup;
+const mapStateToProps = state => {
+    return {
+        isAuth: state.auth.isAuth
+    }
+}
+
+export default connect(mapStateToProps)(Signup);

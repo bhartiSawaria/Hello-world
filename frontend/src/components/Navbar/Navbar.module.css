@@ -1,0 +1,40 @@
+
+.RootContainer{
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    height: 70px;
+    background-color: #544C4A;
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem 3vw;
+    align-items: center;
+}
+
+.IconContainer{
+    height: 80%;
+    width: 60px;
+}
+
+.IconContainer img{
+    height: 100%;
+    width: 100%;
+    border-radius: 27px;
+}
+
+.LinksContainer{
+    vertical-align: middle;
+    display: flex;
+}
+
+.NavbarLink{
+    color: white;
+    font-size: 20px;
+    padding: 0px 1rem;
+}
+
+.NavbarLink:hover{
+    color: yellow;
+}

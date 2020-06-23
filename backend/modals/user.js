@@ -20,13 +20,18 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    posts: [
+    savedImagePosts: [
         {
-            type: mongoose.Types.ObjectId,
-            ref: 'Post'
+            type: Schema.Types.ObjectId,
+            ref: 'imagePost'
         }
-    ] 
-    
+    ],
+    savedTextPosts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'textPost'
+        }
+    ]
 });
 
 module.exports = mongoose.model('User', userSchema);

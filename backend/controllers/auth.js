@@ -58,7 +58,7 @@ exports.postLogin = (req, res, next) => {
                 const token = jwt.sign({
                     email: email,
                     userId: user._id
-                }, SECRET , { expiresIn: '3h'});
+                }, SECRET , { expiresIn: '10h'});
             
                 res.status(200).json({token: token, userDetails: {id: currentUser._id, username: currentUser.username}});
             })

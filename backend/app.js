@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
@@ -12,6 +13,8 @@ const postRoutes = require('./routes/posts');
 const { MONGODB_URI, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = require('./keyInfo');
 
 const app = express();
+
+app.use(cors());
 
 cloudinary.config({
     cloud_name: CLOUDINARY_CLOUD_NAME,
@@ -33,12 +36,13 @@ const imageStorage = new CloudinaryStorage({
 app.use(bodyParser.json());
 app.use(multer({storage: imageStorage}).single('image'));
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'PUT, PATCH, GET, POST, DELETE');
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Headers', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'PUT, PATCH, GET, POST, DELETE');
+//     next();
+// });
+
 
 app.use(authRoutes);
 app.use(postRoutes);

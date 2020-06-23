@@ -19,10 +19,50 @@ class Post extends Component{
         if(isOutlined){
             icon.classList.remove('outline');
             icon.style.color = 'red';
+            fetch('http://localhost:8080/like-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + this.props.token
+                },
+                body: JSON.stringify({
+                    postId: this.state.id
+                })
+            })
+            .then(result => {
+                console.log('Result 1', result);
+                return result.json();
+            })
+            .then(result => {
+                console.log('Result 2', result);
+            })
+            .catch(err => {
+                console.log('Error in like-post', err);
+            })
         }
         else{
             icon.classList.add('outline');
             icon.style.color = '';
+            fetch('http://localhost:8080/unlike-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + this.props.token
+                },
+                body: JSON.stringify({
+                    postId: this.state.id
+                })
+            })
+            .then(result => {
+                console.log('Result 1', result);
+                return result.json();
+            })
+            .then(result => {
+                console.log('Result 2', result);
+            })
+            .catch(err => {
+                console.log('Error in removing a saved post', err);
+            })
         }
     }
 
@@ -56,7 +96,7 @@ class Post extends Component{
         else{
             icon.classList.add('outline');
             fetch('http://localhost:8080/remove-saved-post', {
-                method: 'DELETE',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + this.props.token
@@ -110,17 +150,36 @@ class Post extends Component{
                     </div>
                 ) : null}
                 <div className={classes.IconsContainer}>
-                    <Icon 
-                        name='heart outline' 
-                        size='big' 
-                        id={this.state.id + '-like-icon'}  
-                        onClick={this.likeIconClickHandler}/>
-                    <Icon 
-                        name='bookmark outline' 
-                        size='big' 
-                        id={this.state.id + '-save-icon'} 
-                        style={{position: 'absolute', right: '0px'}} 
-                        onClick={this.saveIconClickHandler}/>
+                    {this.props.post.isLiked ? (
+                        <Icon 
+                            name='heart' 
+                            size='big' 
+                            color='red'
+                            id={this.state.id + '-like-icon'}  
+                            onClick={this.likeIconClickHandler}/>
+                        ) : (
+                        <Icon 
+                            name='heart outline' 
+                            size='big' 
+                            id={this.state.id + '-like-icon'}  
+                            onClick={this.likeIconClickHandler}/>
+                    )}
+
+                    {this.props.post.isSaved ? (
+                        <Icon 
+                            name='bookmark' 
+                            size='big' 
+                            id={this.state.id + '-save-icon'} 
+                            style={{position: 'absolute', right: '0px'}} 
+                            onClick={this.saveIconClickHandler}/>
+                        ) : (
+                        <Icon 
+                            name='bookmark outline' 
+                            size='big' 
+                            id={this.state.id + '-save-icon'} 
+                            style={{position: 'absolute', right: '0px'}} 
+                            onClick={this.saveIconClickHandler}/>
+                    )}
                 </div>
                 {/* <i className="far fa-heart"></i> */}
             </div>

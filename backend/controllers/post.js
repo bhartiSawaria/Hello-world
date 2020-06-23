@@ -36,21 +36,34 @@ exports.createPost = (req, res, next) => {
 }
 
 exports.getFeed = (req, res, next) => {
-    let posts = [];
-    Post.find()
-        .populate('postedBy')
-        .exec()
-        .then(posts => {
-            if(posts){
-                posts = [...posts];
-                res.status(200).json({message: 'Posts fetched successfully', posts: posts})
-            }   
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.setStatus = 500;    
-            next(error);
-        })
+    let allPosts = [];
+    let currentUser;
+    User.findById(req.userId).then(user => {
+        if(user){
+            currentUser = user;
+            return Post.find().populate('postedBy').exec();
+        }
+    }) 
+    .then(posts => {
+        if(posts){
+            let isLiked, isSaved;
+            allPosts = posts.map(post => {
+                isLiked = currentUser.likedPosts.includes(post._id);
+                isSaved = currentUser.savedPosts.includes(post._id);
+                return{
+                    ...post._doc,
+                    isLiked: isLiked,
+                    isSaved: isSaved
+                }
+            })
+            res.status(200).json({message: 'Posts fetched successfully', posts: allPosts})
+        }   
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        next(error);
+    })
 }
 
 exports.savePost = (req, res, next) => {
@@ -69,7 +82,18 @@ exports.savePost = (req, res, next) => {
         }
     })
     .then(user => {
-        if(user){
+        return Post.findById(postId);
+    })
+    .then(post => {
+        if(post){
+            const updatedSavedBy = [...post.savedBy];
+            updatedSavedBy.push(new mongoose.Types.ObjectId(req.userId));
+            post.savedBy = updatedSavedBy;
+            return post.save();
+        }
+    })
+    .then(post => {
+        if(post){
             res.status(200).json({message: 'Post saved successfully'});
         }
     })
@@ -91,8 +115,95 @@ exports.removeSavedPost = (req, res, next) => {
         }
     })
     .then(user => {
-        if(user){
+        return Post.findById(postId);
+    })
+    .then(post => {
+        if(post){
+            const updatedSavedBy = post.savedBy.filter(user => user._id != userId);
+            post.savedBy = updatedSavedBy;
+            return post.save();
+        }
+    })
+    .then(post => {
+        if(post){
             res.status(201).json({message: 'Post removed successfully'});
+        }
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        next(error);
+    })
+};
+
+exports.likePost = (req, res, next) => {
+    const postId = req.body.postId;
+    if(!postId){
+        const error = new Error('Post id is incorrect.');
+        throw error;
+    }
+    User.findById(req.userId).then(user => {
+        if(user){
+            const updatedLikedPosts = [...user.likedPosts];
+            updatedLikedPosts.push(new mongoose.Types.ObjectId(postId));
+            user.likedPosts = updatedLikedPosts;
+            return user.save();
+        }
+    })
+    .then(user => {
+        return Post.findById(postId);
+    })
+    .then(post => {
+        if(post){
+            const updatedLikedBy = [...post.likesInfo.likedBy];
+            const updatedCount = post.likesInfo.count + 1;
+            updatedLikedBy.push(new mongoose.Types.ObjectId(req.userId));
+            post.likesInfo = {
+                count: updatedCount,
+                likedBy: updatedLikedBy
+            };
+            return post.save();
+        }
+    })
+    .then(post => {
+        if(post){
+            res.status(200).json({message: 'Post liked successfully'});
+        }
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        next(error);
+    })
+}
+
+exports.unlikePost = (req, res, next) => {
+    const postId = req.body.postId;
+    const userId = req.userId;
+    User.findById(userId).then(user => {
+        if(user){
+            const updatedLikedPosts = user.likedPosts.filter(post => post._id != postId);
+            user.likedPosts = updatedLikedPosts;
+            return user.save();
+        }
+    })
+    .then(user => {
+        return Post.findById(postId);
+    })
+    .then(post => {
+        if(post){
+            const updatedLikedBy = post.likesInfo.likedBy.filter(user => user._id != userId);
+            const updatedCount = post.likesInfo.count - 1;
+            post.likesInfo = {
+                count: updatedCount,
+                likedBy: updatedLikedBy
+            };
+            return post.save();
+        }
+    })
+    .then(post => {
+        if(post){
+            res.status(201).json({message: 'Post unliked successfully'});
         }
     })
     .catch(err => {

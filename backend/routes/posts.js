@@ -12,7 +12,11 @@ router.get('/feed', isAuth, postControllers.getFeed);
 
 router.post('/save-post', isAuth, postControllers.savePost);
 
-router.delete('/remove-saved-post', isAuth, postControllers.removeSavedPost);
+router.post('/remove-saved-post', isAuth, postControllers.removeSavedPost);
+
+router.post('/like-post', isAuth, postControllers.likePost);
+
+router.post('/unlike-post', isAuth, postControllers.unlikePost);
 
 // router.post('/add-post/type1', isAuth, postControllers.createTextPost);
 

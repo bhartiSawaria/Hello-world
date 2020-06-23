@@ -20,7 +20,25 @@ const postSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    likesInfo: {
+        count: {
+            type: Number,
+            default: 0
+        },
+        likedBy: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
+        ]
+    },
+    savedBy: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ]
 }, { timestamps: true } );
 
 module.exports = mongoose.model('Post', postSchema);

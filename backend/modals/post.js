@@ -3,13 +3,18 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const imagePostSchema = new Schema({
+const postSchema = new Schema({
     caption: {
         type: String
     },
+    title: {
+        type: String
+    },
     imageUrl: {
-        type: String,
-        required: true
+        type: String
+    },
+    content: {
+        type: String
     },
     postedBy: {
         type: Schema.Types.ObjectId,
@@ -18,4 +23,4 @@ const imagePostSchema = new Schema({
     }
 }, { timestamps: true } );
 
-module.exports = mongoose.model('imagePost', imagePostSchema);
+module.exports = mongoose.model('Post', postSchema);

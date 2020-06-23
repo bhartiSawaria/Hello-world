@@ -20,16 +20,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    savedImagePosts: [
+    savedPosts: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'imagePost'
-        }
-    ],
-    savedTextPosts: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'textPost'
+            ref: 'Post'
         }
     ]
 });

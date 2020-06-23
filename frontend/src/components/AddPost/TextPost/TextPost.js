@@ -28,7 +28,7 @@ class TextPost extends Component{
         if(this.isInputValid()){
             this.setState({isLoading: true});
 
-            fetch('http://localhost:8080/add-post/type1', {
+            fetch('http://localhost:8080/add-post', {
                 method: 'POST',
                 headers: {
                     Authorization: 'Bearer ' + this.props.token,

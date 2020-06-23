@@ -32,7 +32,7 @@ class Post extends Component{
         let isOutlined = icon.classList.contains('outline');
         if(isOutlined){
             icon.classList.remove('outline');
-            fetch('http://localhost:8080/save-post/type' + this.state.type, {
+            fetch('http://localhost:8080/save-post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ class Post extends Component{
         }
         else{
             icon.classList.add('outline');
-            fetch('http://localhost:8080/remove-saved-post/type' + this.state.type, {
+            fetch('http://localhost:8080/remove-saved-post', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,12 +112,12 @@ class Post extends Component{
                 <div className={classes.IconsContainer}>
                     <Icon 
                         name='heart outline' 
-                        size='large' 
+                        size='big' 
                         id={this.state.id + '-like-icon'}  
                         onClick={this.likeIconClickHandler}/>
                     <Icon 
                         name='bookmark outline' 
-                        size='large' 
+                        size='big' 
                         id={this.state.id + '-save-icon'} 
                         style={{position: 'absolute', right: '0px'}} 
                         onClick={this.saveIconClickHandler}/>

@@ -12,6 +12,7 @@ import HomePage from './components/HomePage/HomePage';
 import AddPost from './components/AddPost/AddPost';
 import TextPost from './components/AddPost/TextPost/TextPost';
 import ImagePost from './components/AddPost/ImagePost/ImagePost';
+import Feed  from './components/Feed/Feed';
 
 class App extends Component{
 
@@ -38,6 +39,7 @@ class App extends Component{
           <Switch>
             <Route exact path='/signup' component={Signup}/>
             <Route exact path='/login' component={Login}/>
+            {this.props.isAuth ? <Route exact path='/feed' component={Feed}/> : null}
             {this.props.isAuth ? <Route exact path='/add-post' component={AddPost}/> : null } 
             {this.props.isAuth ? <Route exact path='/add-post/type1' component={TextPost}/> : null }
             {this.props.isAuth ? <Route exact path='/add-post/type2' component={ImagePost}/> : null } 

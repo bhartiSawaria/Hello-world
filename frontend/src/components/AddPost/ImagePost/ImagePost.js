@@ -70,6 +70,8 @@ class ImagePost extends Component{
             .then(result => {
                 console.log('Result 2', result);
                 this.setState({isLoading: false});
+                this.props.history.push('/feed');
+
             })
             .catch(err => {
                 console.log(err);

@@ -82,9 +82,7 @@ class Signup extends Component{
         const fieldName = event.target.name;
         const updatedUserInfo = {...this.state.userInfo};
         updatedUserInfo[event.target.name] = event.target.value;
-        console.log('userInfo', updatedUserInfo);
         this.setState({userInfo: updatedUserInfo});
-        console.log(this.state.userInfo.name);
     }
 
     formSubmitHandler = (event) => {
@@ -119,7 +117,6 @@ class Signup extends Component{
 
     render(){
         let error = null;
-        console.log(this.state);
         if( this.state.error !== '' ){
             error = <p style={{color: 'red'}}>{this.state.error}</p>
         }

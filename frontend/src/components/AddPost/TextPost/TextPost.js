@@ -46,6 +46,7 @@ class TextPost extends Component{
             .then(result => {
                 console.log('2. Result is ', result);
                 this.setState({isLoading: false});
+                this.props.history.push('/feed');
             })
             .catch(err => {
                 console.log('Error in PostType1', err);

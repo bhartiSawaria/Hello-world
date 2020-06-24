@@ -18,6 +18,12 @@ exports.postSignup = (req, res, next) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
+    const notifications = {
+        count: 1,
+        messageInfo: [{
+            message: 'Welcome to Hello World'
+        }]
+    }
 
     bcrypt.hash(password, 12)
         .then(hashPassword => {
@@ -26,7 +32,7 @@ exports.postSignup = (req, res, next) => {
                 username: username,
                 email: email,
                 password: hashPassword,
-                posts: []
+                notifications: notifications
             });
             return user.save();
         })
@@ -37,7 +43,7 @@ exports.postSignup = (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log('Error occured!');
+            console.log('Error occured!', err);
         })
 }
 

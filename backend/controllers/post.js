@@ -138,6 +138,7 @@ exports.removeSavedPost = (req, res, next) => {
 
 exports.likePost = (req, res, next) => {
     const postId = req.body.postId;
+    let userName;
     if(!postId){
         const error = new Error('Post id is incorrect.');
         throw error;
@@ -151,7 +152,10 @@ exports.likePost = (req, res, next) => {
         }
     })
     .then(user => {
-        return Post.findById(postId);
+        if(user){
+            userName = user.username;
+            return Post.findById(postId);
+        }
     })
     .then(post => {
         if(post){
@@ -167,6 +171,20 @@ exports.likePost = (req, res, next) => {
     })
     .then(post => {
         if(post){
+            return User.findById(post.postedBy);
+        }
+    })
+    .then(user => {
+        if(user){
+            user.notifications.count += 1;
+            const updatedNotification = user.notifications.messageInfo.push({
+                message: userName + ' liked your post.'
+            });
+            return user.save();
+        }
+    })
+    .then(user => {
+        if(user){
             res.status(200).json({message: 'Post liked successfully'});
         }
     })
@@ -211,8 +229,98 @@ exports.unlikePost = (req, res, next) => {
         error.setStatus = 500;    
         next(error);
     })
-}
+};
 
+exports.getSavedPosts = (req, res, next) => {
+    const userId = req.userId;
+    if(!userId){
+        const error = new Error('User id invalid.');
+        throw error;
+    }
+    let savedPosts;
+    let currentUser;
+    User.findById(userId).then(user => {
+        if(user){
+            currentUser = user;
+            return Post.find().populate('postedBy').exec();
+        }
+    })
+    .then(posts => {
+        if(posts){
+            let isLiked;
+            savedPosts = posts.reduce((acc, post) => {
+                if( post.savedBy.includes(userId) ){
+                    isLiked = currentUser.likedPosts.includes(post._id);
+                    acc.push({
+                        ...post._doc,
+                        isLiked: isLiked,
+                        isSaved: true
+                    })
+                }
+                return acc;
+            }, []);
+        }
+        res.status(200).json({message: 'Saved posts fetched successfully', posts: savedPosts});
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        next(error);
+    })
+};
+
+exports.getNotifications = (req, res, next) => {
+    const userId = req.userId;
+    if(!userId){
+        const error = new Error('User id invalid.');
+        throw error;
+    }
+
+    User.findById(userId).then(user => {
+        if(user){
+            user.notifications.count = 0;
+            return user.save();
+        }
+    })
+    .then(user => {
+        if(user){
+            res.status(200).json({message: 'Notifications fetched successfully.', notifications: user.notifications.messageInfo});
+        }
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        next(error);
+    })
+};
+
+exports.deleteNotification = (req, res, next) => {
+    const userId = req.userId;
+    const messageId = req.body.messageId;
+    if(!userId){
+        const error = new Error('User id invalid.');
+        throw error;
+    }
+
+    User.findById(userId).then(user => {
+        if(user){
+            const updatedMessageInfo = user.notifications.messageInfo.filter(message => message._id != messageId);
+            user.notifications.count = 0;
+            user.notifications.messageInfo = updatedMessageInfo;
+            return user.save();
+        }
+    })
+    .then(user => {
+        if(user){
+            res.status(200).json({message: 'Notification deleted successfully.'});
+        }
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        next(error);
+    })
+}
 
 // exports.createTextPost = (req, res, next) => {
 //     let title = '';

@@ -1,17 +1,17 @@
 
 import React, { Component } from 'react';
+
+import classes from './SavedPost.module.css';
 import { Icon } from 'semantic-ui-react';
 import moment from 'moment';
 
-import classes from './Post.module.css';
-
-class Post extends Component{
+class SavedPost extends Component{
 
     state = {
         id: this.props.post._id
     }
 
-    likeIconClickHandler = (event) => {
+    likeIconClickHandler = () => {
         const id = this.state.id + '-like-icon';
         const icon = document.getElementById(id);
         let isOutlined = icon.classList.contains('outline');
@@ -41,7 +41,7 @@ class Post extends Component{
         }
         else{
             icon.classList.add('outline');
-            icon.style.color = '';
+            icon.style.color = 'black';
             fetch('http://localhost:8080/unlike-post', {
                 method: 'POST',
                 headers: {
@@ -180,10 +180,9 @@ class Post extends Component{
                             onClick={this.saveIconClickHandler}/>
                     )}
                 </div>
-                {/* <i className="far fa-heart"></i> */}
             </div>
         )
     }
-}
+};
 
-export default Post;
+export default SavedPost;

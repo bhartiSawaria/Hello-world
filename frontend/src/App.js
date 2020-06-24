@@ -13,6 +13,8 @@ import AddPost from './components/AddPost/AddPost';
 import TextPost from './components/AddPost/TextPost/TextPost';
 import ImagePost from './components/AddPost/ImagePost/ImagePost';
 import Feed  from './components/Feed/Feed';
+import SavedPosts from './components/SavedPosts/SavedPosts';
+import Notifications from './components/Notifications/Notifications';
 
 class App extends Component{
 
@@ -42,7 +44,9 @@ class App extends Component{
             {this.props.isAuth ? <Route exact path='/feed' component={Feed}/> : null}
             {this.props.isAuth ? <Route exact path='/add-post' component={AddPost}/> : null } 
             {this.props.isAuth ? <Route exact path='/add-post/type1' component={TextPost}/> : null }
-            {this.props.isAuth ? <Route exact path='/add-post/type2' component={ImagePost}/> : null } 
+            {this.props.isAuth ? <Route exact path='/add-post/type2' component={ImagePost}/> : null }
+            {this.props.isAuth ? <Route exact path='/saved-posts' component={SavedPosts}/> : null }
+            {this.props.isAuth ? <Route exact path='/notifications' component={Notifications}/> : null }  
             <Route path='/' component={HomePage} />
           </Switch>
         </div>

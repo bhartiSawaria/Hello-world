@@ -22,7 +22,6 @@ class Login extends Component{
         if( this.props.isAuth ){
           this.props.history.push('/');
         }
-        console.log('YES');
     }
 
     isAnyFieldEmpty = () => {

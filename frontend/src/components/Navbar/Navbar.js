@@ -25,8 +25,8 @@ const navBar = (props) => {
             { isAuth ? <div className={classes.NavbarLink}>Bharti</div> : null }
             { isAuth ? <NavLink to='/feed' className={classes.NavbarLink}>Feed</NavLink> : null }
             { isAuth ? <NavLink to='/add-post' className={classes.NavbarLink}>Add Post</NavLink> : null }
-            { isAuth ? <NavLink to='/' className={classes.NavbarLink}>Saved</NavLink> : null }
-            { isAuth ? <NavLink to='/' className={classes.NavbarLink}>Notifications</NavLink> : null }
+            { isAuth ? <NavLink to='/saved-posts' className={classes.NavbarLink}>Saved</NavLink> : null }
+            { isAuth ? <NavLink to='/notifications' className={classes.NavbarLink}>Notifications</NavLink> : null }
             { !isAuth ? <NavLink to='/login' className={classes.NavbarLink}>Login</NavLink> : null }
             { !isAuth ? <NavLink to='/signup' className={classes.NavbarLink}>Signup</NavLink> : null }
             { isAuth ? <button className={classes.NavbarButton} onClick={props.setStatusToLogout}>Logout</button> : null }
@@ -50,8 +50,8 @@ const navBar = (props) => {
                     { isAuth ? <div className={classes.NavbarLink}>Bharti</div> : null }
                     { isAuth ? <NavLink to='/feed' className={classes.NavbarLink}>Feed</NavLink> : null }
                     { isAuth ? <NavLink to='/add-post' className={classes.NavbarLink}>Add Post</NavLink> : null }
-                    { isAuth ? <NavLink to='/' className={classes.NavbarLink}>Saved</NavLink> : null }
-                    { isAuth ? <NavLink to='/' className={classes.NavbarLink}>Notifications</NavLink> : null }
+                    { isAuth ? <NavLink to='/saved-posts' className={classes.NavbarLink}>Saved</NavLink> : null }
+                    { isAuth ? <NavLink to='/notifications' className={classes.NavbarLink}>Notifications</NavLink> : null }
                     { !isAuth ? <NavLink to='/login' className={classes.NavbarLink}>Login</NavLink> : null }
                     { !isAuth ? <NavLink to='/signup' className={classes.NavbarLink}>Signup</NavLink> : null }
                     { isAuth ? <button className={classes.NavbarButton} onClick={props.setStatusToLogout}>Logout</button> : null }

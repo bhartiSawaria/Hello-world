@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
@@ -31,7 +30,19 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Post'
         }
-    ]
+    ],
+    notifications: {
+        count: {
+            type: Number,
+            default: 0
+        },
+        messageInfo: [{
+            message:{
+                type: String,
+                required: true
+            }
+        }]
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);

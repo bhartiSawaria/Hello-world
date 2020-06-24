@@ -18,6 +18,12 @@ router.post('/like-post', isAuth, postControllers.likePost);
 
 router.post('/unlike-post', isAuth, postControllers.unlikePost);
 
+router.get('/saved-posts', isAuth, postControllers.getSavedPosts);
+
+router.get('/notifications', isAuth, postControllers.getNotifications);
+
+router.delete('/notification', isAuth, postControllers.deleteNotification);
+
 // router.post('/add-post/type1', isAuth, postControllers.createTextPost);
 
 // router.post('/add-post/type2', isAuth, postControllers.createImagePost);

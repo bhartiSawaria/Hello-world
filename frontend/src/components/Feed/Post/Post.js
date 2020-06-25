@@ -122,6 +122,10 @@ class Post extends Component{
         return (
             <div className={classes.RootContainer}>
                 <div className={classes.UsernameContainer}>
+                {this.props.post.postedBy && this.props.post.postedBy.imageUrl ? 
+                    <img 
+                        src={this.props.post.postedBy.imageUrl}/> 
+                : null}
                     <p>{username}</p>
                     <span>{moment(this.props.post.createdAt).fromNow()}</span>
                 </div>

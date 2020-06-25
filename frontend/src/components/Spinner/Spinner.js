@@ -4,9 +4,9 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 
 const spinner = (props) => {
     return (
-        <Dimmer active>
-            <Loader size='huge' content="Loading"/>
-        </Dimmer>
+        <Dimmer active style={{height: '200vh', width: '100%', 'z-index': '10'}}>
+            <Loader size='huge' content="Loading" style={{position: 'absolute', top: '50vh', left: '50%'}}/>
+        </Dimmer> 
     );
 }
 

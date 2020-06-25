@@ -6,10 +6,6 @@ import close from '../../../assets/images/close.png';
 
 class Notification extends Component{
 
-    state = {
-        id: this.props._id
-    }
-
     crossIconClickHandler = () => {
         console.log('Clicked');
         fetch('http://localhost:8080/notification', {

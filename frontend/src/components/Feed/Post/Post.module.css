@@ -9,11 +9,23 @@
 
 .UsernameContainer{
     position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.UsernameContainer img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 0.5px solid black;
+    margin-right: 10px;
+    display: inline-block;
 }
 
 .UsernameContainer p{
     font-size: 16px;
     display: inline-block;
+    margin: 0em;
 }
 
 .UsernameContainer span{

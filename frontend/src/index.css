@@ -2,17 +2,16 @@
 
 html{
   height: 100%;
+  /* position: relative; */
 }
 
 body {
-  margin: 0;
+  /* padding: 70px 0px 0px 0px; */
   height: 100%;
+  width: 100%;
+  /* position: absolute; */
   background-color: #eee;
   overflow: scroll;
   font-family: 'Merriweather', serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

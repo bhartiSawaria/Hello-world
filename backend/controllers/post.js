@@ -9,7 +9,7 @@ exports.createPost = (req, res, next) => {
         newPost['title'] = req.body.title;
     }
     if(req.body.content){
-        newPost['content'] = req.body.title;
+        newPost['content'] = req.body.content;
     }
     if(req.body.caption){
         newPost['caption'] = req.body.caption;

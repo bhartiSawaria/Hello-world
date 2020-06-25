@@ -9,6 +9,7 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
+const userRoutes = require('./routes/user');
 
 const { MONGODB_URI, CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = require('./keyInfo');
 
@@ -46,6 +47,7 @@ app.use(multer({storage: imageStorage}).single('image'));
 
 app.use(authRoutes);
 app.use(postRoutes);
+app.use(userRoutes);
 
 app.use((error, req, res, next) => {
     const status = error.statusCode || 500;

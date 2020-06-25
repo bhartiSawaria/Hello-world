@@ -14,10 +14,12 @@ exports.postSignup = (req, res, next) => {
         console.log('Error occured in postSignup', errors);
         throw err;
     }
+
     const name = req.body.name;
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
+    const imageUrl = req.body.imageUrl;
     const notifications = {
         count: 1,
         messageInfo: [{
@@ -32,6 +34,7 @@ exports.postSignup = (req, res, next) => {
                 username: username,
                 email: email,
                 password: hashPassword,
+                imageUrl: imageUrl,
                 notifications: notifications
             });
             return user.save();

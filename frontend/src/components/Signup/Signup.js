@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import classes from './Signup.module.css';
+import profilePic from '../../assets/images/user2.png';
 
 class Signup extends Component{
 
@@ -14,7 +15,8 @@ class Signup extends Component{
             username: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            imageUrl: profilePic
         },
         isLoading: false,
         error: ''

@@ -15,6 +15,7 @@ import ImagePost from './components/AddPost/ImagePost/ImagePost';
 import Feed  from './components/Feed/Feed';
 import SavedPosts from './components/SavedPosts/SavedPosts';
 import Notifications from './components/Notifications/Notifications';
+import Profile from './components/Profile/Profile';
 
 class App extends Component{
 
@@ -37,10 +38,11 @@ class App extends Component{
     return(
       <BrowserRouter>
         <div className={classes.RootContainer}>
-          <Navbar isAuth={this.props.isAuth} setStatusToLogout={this.logoutHandler}/>
+          <Navbar isAuth={this.props.isAuth} setStatusToLogout={this.logoutHandler} userInfo={this.props.userInfo}/>
           <Switch>
-            <Route exact path='/signup' component={Signup}/>
-            <Route exact path='/login' component={Login}/>
+            {!this.props.isAuth ? <Route exact path='/signup' component={Signup}/> : null }
+            {!this.props.isAuth ? <Route exact path='/login' component={Login}/> : null }
+            {this.props.isAuth ? <Route exact path='/my-profile' component={Profile}/> : null }
             {this.props.isAuth ? <Route exact path='/feed' component={Feed}/> : null}
             {this.props.isAuth ? <Route exact path='/add-post' component={AddPost}/> : null } 
             {this.props.isAuth ? <Route exact path='/add-post/type1' component={TextPost}/> : null }
@@ -57,7 +59,8 @@ class App extends Component{
 
 const mapStateToProps = state => {
   return {
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    userInfo: state.auth.userDetails
   }
 }
 

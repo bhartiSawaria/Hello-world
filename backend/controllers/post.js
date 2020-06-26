@@ -18,6 +18,7 @@ exports.createPost = (req, res, next) => {
         newPost['imageUrl'] = req.file.path
     }
 
+    let currentPost;
     User.findById(req.userId).then(user => {
         newPost['postedBy'] = user;
         const post = new Post(newPost);
@@ -25,8 +26,18 @@ exports.createPost = (req, res, next) => {
     })
     .then(post => {
         if(post){
-            res.status(201).json({message: 'Post saved successfully', post: post});
+            currentPost = post;
+            return User.findById(post.postedBy);
         }
+    })
+    .then(user => {
+        const updatedPosts = [...user.posts];
+        updatedPosts.push(new mongoose.Types.ObjectId(currentPost._id));
+        user.posts = updatedPosts;
+        return user.save();
+    })
+    .then(user => {
+        res.status(201).json({message: 'Post saved successfully', post: currentPost});
     })
     .catch(err => {
         const error = new Error(err);
@@ -48,8 +59,8 @@ exports.getFeed = (req, res, next) => {
         if(posts){
             let isLiked, isSaved;
             allPosts = posts.map(post => {
-                isLiked = currentUser.likedPosts.includes(post._id);
-                isSaved = currentUser.savedPosts.includes(post._id);
+                isLiked = post.likesInfo.likedBy.includes(currentUser._id);
+                isSaved = post.savedBy.includes(currentUser._id);
                 return{
                     ...post._doc,
                     isLiked: isLiked,
@@ -73,24 +84,12 @@ exports.savePost = (req, res, next) => {
         const error = new Error('Post id is incorrect.');
         throw error;
     }
-    User.findById(req.userId).then(user => {
-        if(user){
-            const updatedSavedPosts = [...user.savedPosts];
-            updatedSavedPosts.push(new mongoose.Types.ObjectId(postId));
-            user.savedPosts = updatedSavedPosts;
-            return user.save();
-        }
-    })
-    .then(user => {
-        return Post.findById(postId);
-    })
-    .then(post => {
-        if(post){
-            const updatedSavedBy = [...post.savedBy];
-            updatedSavedBy.push(new mongoose.Types.ObjectId(req.userId));
-            post.savedBy = updatedSavedBy;
-            return post.save();
-        }
+
+    Post.findById(postId).then(post => {
+        const updatedSavedBy = [...post.savedBy];
+        updatedSavedBy.push(new mongoose.Types.ObjectId(req.userId));
+        post.savedBy = updatedSavedBy;
+        return post.save();
     })
     .then(post => {
         if(post){
@@ -107,17 +106,8 @@ exports.savePost = (req, res, next) => {
 exports.removeSavedPost = (req, res, next) => {
     const postId = req.body.postId;
     const userId = req.userId;
-    User.findById(userId).then(user => {
-        if(user){
-            const updatedSavedPosts = user.savedPosts.filter(post => post._id != postId);
-            user.savedPosts = updatedSavedPosts;
-            return user.save();
-        }
-    })
-    .then(user => {
-        return Post.findById(postId);
-    })
-    .then(post => {
+
+    Post.findById(postId).then(post => {
         if(post){
             const updatedSavedBy = post.savedBy.filter(user => user._id != userId);
             post.savedBy = updatedSavedBy;
@@ -137,21 +127,15 @@ exports.removeSavedPost = (req, res, next) => {
 };
 
 exports.likePost = (req, res, next) => {
+    console.log('Reached here');
     const postId = req.body.postId;
     let userName;
     if(!postId){
         const error = new Error('Post id is incorrect.');
         throw error;
     }
+
     User.findById(req.userId).then(user => {
-        if(user){
-            const updatedLikedPosts = [...user.likedPosts];
-            updatedLikedPosts.push(new mongoose.Types.ObjectId(postId));
-            user.likedPosts = updatedLikedPosts;
-            return user.save();
-        }
-    })
-    .then(user => {
         if(user){
             userName = user.username;
             return Post.findById(postId);
@@ -175,13 +159,13 @@ exports.likePost = (req, res, next) => {
         }
     })
     .then(user => {
-        if(user){
+        if(user && user._id != req.userId){
             user.notifications.count += 1;
             const updatedNotification = user.notifications.messageInfo.push({
                 message: userName + ' liked your post.'
             });
-            return user.save();
         }
+        return user.save();
     })
     .then(user => {
         if(user){
@@ -198,16 +182,8 @@ exports.likePost = (req, res, next) => {
 exports.unlikePost = (req, res, next) => {
     const postId = req.body.postId;
     const userId = req.userId;
-    User.findById(userId).then(user => {
-        if(user){
-            const updatedLikedPosts = user.likedPosts.filter(post => post._id != postId);
-            user.likedPosts = updatedLikedPosts;
-            return user.save();
-        }
-    })
-    .then(user => {
-        return Post.findById(postId);
-    })
+
+    Post.findById(postId)
     .then(post => {
         if(post){
             const updatedLikedBy = post.likesInfo.likedBy.filter(user => user._id != userId);
@@ -239,18 +215,13 @@ exports.getSavedPosts = (req, res, next) => {
     }
     let savedPosts;
     let currentUser;
-    User.findById(userId).then(user => {
-        if(user){
-            currentUser = user;
-            return Post.find().populate('postedBy').exec();
-        }
-    })
-    .then(posts => {
+             
+    Post.find().populate('postedBy').exec().then(posts => {
         if(posts){
             let isLiked;
             savedPosts = posts.reduce((acc, post) => {
                 if( post.savedBy.includes(userId) ){
-                    isLiked = currentUser.likedPosts.includes(post._id);
+                    isLiked = post.likesInfo.likedBy.includes(userId);
                     acc.push({
                         ...post._doc,
                         isLiked: isLiked,

@@ -2,14 +2,16 @@
 .Rootcontainer{
     display: flex;
     width: 80%;
-    height: 60%;
-    margin: 20vh auto;
+    height: 100%;
+    margin: auto;
     justify-content: space-around;
     flex-wrap: wrap;
+    padding-top: 15vh;
+    box-sizing: border-box;
 }
 
 .PostType{
-    height: 80%;
+    height: 60%;
     width: 45%;
     background-color: #d6d6d6;
     margin: auto;
@@ -20,7 +22,7 @@
     height: 80%;
     width: 80%;
     text-align: center;
-    margin: 6% auto;
+    margin: calc(20%/2) auto;
     background-color: white;
 }
 

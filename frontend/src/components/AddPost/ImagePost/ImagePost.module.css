@@ -1,9 +1,11 @@
 
 .RootContainer{
     margin: 25vh auto;
-    width: 55%;
+    width: 60%;
+    height: 60%;
     background-color: #d6d6d6;
     padding: 2rem;
+    box-sizing: border-box;
 }
 
 .InputField input,

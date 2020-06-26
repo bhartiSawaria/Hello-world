@@ -23,18 +23,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    savedPosts: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Post'
-        }
-    ],
-    likedPosts: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Post'
-        }
-    ],
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
     notifications: {
         count: {
             type: Number,

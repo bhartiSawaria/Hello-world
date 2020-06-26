@@ -72,6 +72,18 @@
     text-align: center;
 }
 
+.EditForm{
+    position: relative;
+    z-index: 20;
+    background-color: #ccc;
+    padding: 1rem;
+    text-align: center;
+}
+
+.EditForm input{
+    margin: 1rem auto;
+}
+
 .Modal p{
     margin: 12px;
 }

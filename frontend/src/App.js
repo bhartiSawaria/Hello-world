@@ -16,6 +16,9 @@ import Feed  from './components/Feed/Feed';
 import SavedPosts from './components/SavedPosts/SavedPosts';
 import Notifications from './components/Notifications/Notifications';
 import Profile from './components/Profile/Profile';
+import MyPosts from './components/Profile/MyPosts/MyPosts';
+import Chats from './components/Chats/Chats';
+import PrivateChat from './components/Chats/PrivateChat/PrivateChat';
 
 class App extends Component{
 
@@ -43,10 +46,13 @@ class App extends Component{
             {!this.props.isAuth ? <Route exact path='/signup' component={Signup}/> : null }
             {!this.props.isAuth ? <Route exact path='/login' component={Login}/> : null }
             {this.props.isAuth ? <Route exact path='/my-profile' component={Profile}/> : null }
+            {this.props.isAuth ? <Route exact path='/my-posts' component={MyPosts}/> : null }
             {this.props.isAuth ? <Route exact path='/feed' component={Feed}/> : null}
             {this.props.isAuth ? <Route exact path='/add-post' component={AddPost}/> : null } 
             {this.props.isAuth ? <Route exact path='/add-post/type1' component={TextPost}/> : null }
             {this.props.isAuth ? <Route exact path='/add-post/type2' component={ImagePost}/> : null }
+            {this.props.isAuth ? <Route exact path='/chats' component={Chats}/> : null } 
+            {this.props.isAuth ? <Route exact path='/chats/private/:path' component={PrivateChat}/> : null } 
             {this.props.isAuth ? <Route exact path='/saved-posts' component={SavedPosts}/> : null }
             {this.props.isAuth ? <Route exact path='/notifications' component={Notifications}/> : null }  
             <Route path='/' component={HomePage} />

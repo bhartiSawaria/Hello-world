@@ -49,6 +49,11 @@ const navBar = (props) => {
             : null }
             { isAuth ?
                     <li>
+                    <NavLink to='/chats' activeStyle={{color: 'yellow'}}>Chats</NavLink>
+                </li> 
+            : null }
+            { isAuth ?
+                    <li>
                     <NavLink to='/saved-posts' activeStyle={{color: 'yellow'}}>Saved</NavLink>
                 </li> 
             : null }
@@ -91,7 +96,7 @@ const navBar = (props) => {
                                     </button>
                                     <div className={classes.DropdownItemsContainer} id='dropdown-list-mainNav'>
                                         <Link to='/my-profile'>Profile</Link>
-                                        <Link to='/'>My Posts</Link>
+                                        <Link to='/my-posts'>My Posts</Link>
                                         <Link to='/'>More...</Link>
                                     </div>
                                 </div>
@@ -117,7 +122,7 @@ const navBar = (props) => {
                                 </button>
                                 <div className={classes.DropdownItemsContainer} id='dropdown-list-sidebar'>
                                     <Link to='/my-profile'>Profile</Link>
-                                    <Link to='/'>My Posts</Link>
+                                    <Link to='/my-posts'>My Posts</Link>
                                     <Link to='/'>More...</Link>
                                 </div>
                             </div>

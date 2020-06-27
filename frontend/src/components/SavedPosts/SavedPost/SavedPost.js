@@ -124,7 +124,7 @@ class SavedPost extends Component{
                 <div className={classes.UsernameContainer}>
                 {this.props.post.postedBy && this.props.post.postedBy.imageUrl ? 
                     <img 
-                        src={this.props.post.postedBy.imageUrl}/> 
+                        src={this.props.post.postedBy.imageUrl} alt='profilePic'/> 
                 : null}
                     <p>{username}</p>
                     <span>{moment(this.props.post.createdAt).fromNow()}</span>

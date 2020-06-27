@@ -69,7 +69,7 @@ exports.postLogin = (req, res, next) => {
                     userId: user._id
                 }, SECRET , { expiresIn: '10h'});
             
-                res.status(200).json({token: token, userDetails: {id: currentUser._id, username: currentUser.username}});
+                res.status(200).json({token: token, userDetails: {id: currentUser._id, username: currentUser.username, imageUrl: currentUser.imageUrl}});
             })
             .catch(err => {
                 const error = new Error('Cannot find user!');

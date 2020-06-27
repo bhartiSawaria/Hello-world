@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import classes from './Navbar.module.css';
 import AppIcon from '../../assets/images/icon3.jpg';
-import { Button, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 const onHamburgerMenuClick = () => {
     const sidebar = document.getElementById('side-bar');

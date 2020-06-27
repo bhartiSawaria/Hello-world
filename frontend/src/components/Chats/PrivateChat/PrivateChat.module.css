@@ -68,23 +68,23 @@
     color: white;
 }
 
-.MessageButton:hover,
+/* .MessageButton:hover,
 .MessageButton:active{
     background-color: white;
     color: #00C853;
     border: 1.5px solid #00C853;
     font-weight: bold;
-}
+} */
 
 .MediaButton{
     background-color: #ff5252;
     color: white;
 }
 
-.MediaButton:hover,
+/* .MediaButton:hover,
 .MediaButton:active{
     background-color: white;
     color: #ff5252;
     border: 1.5px solid #ff5252;
     font-weight: bold;
-}
+} */

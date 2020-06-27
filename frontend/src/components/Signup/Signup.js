@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Form, Header, Button } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -81,7 +81,6 @@ class Signup extends Component{
 
     formInputChangeHandler = (event) => {
         this.setState({error: ''});
-        const fieldName = event.target.name;
         const updatedUserInfo = {...this.state.userInfo};
         updatedUserInfo[event.target.name] = event.target.value;
         this.setState({userInfo: updatedUserInfo});

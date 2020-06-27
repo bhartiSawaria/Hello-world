@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import { Button, Loader, Dimmer } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import classes from './Chats.module.css';
@@ -64,15 +63,18 @@ class Chats extends Component{
         return id2 + '-' + id1;
     }
 
-    sendMessageHandler = (receiverId) => {
-        const path = this.getId(this.props.user.id, receiverId);
-        this.props.history.push('/chats/private/' + path);
+    sendMessageHandler = (receiver) => {
+        const path = this.getId(this.props.user.id, receiver._id);
+        this.props.history.push('/chats/private/' + path, {
+            sender: this.props.user,
+            receiver: receiver
+        });
     }
 
     render(){
-        let users = this.state.users.map(user => {
+        let users = this.state.users && this.state.users.map(user => {
             return(
-                <User key={user._id} user={user} sendMessage={() => this.sendMessageHandler(user._id)}/>
+                <User key={user._id} user={user} sendMessage={() => this.sendMessageHandler(user)}/>
             )
         })
 

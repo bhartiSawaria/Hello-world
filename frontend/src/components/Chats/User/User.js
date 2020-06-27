@@ -8,7 +8,7 @@ const user = (props) => {
     return (
         <div className={classes.RootContainer}>
             <div>
-                <img src={props.user.imageUrl}/> 
+                <img src={props.user.imageUrl} alt='profilePic'/> 
                 <p>{props.user.username}</p>
             </div>
             <Button onClick={props.sendMessage}>Message</Button>

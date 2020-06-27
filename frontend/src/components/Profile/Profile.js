@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input, Icon, Button} from 'semantic-ui-react';
+import { Input, Button} from 'semantic-ui-react';
 
 import classes from './Profile.module.css';
 import Spinner from '../Spinner/Spinner';
@@ -130,7 +130,6 @@ class Profile extends Component{
 
     formInputChangeHandler = (event) => {
         this.setState({error: ''});
-        const fieldName = event.target.name;
         const updatedUserInfo = {...this.state.userInfo};
         updatedUserInfo[event.target.name] = event.target.value;
         this.setState({userInfo: updatedUserInfo});

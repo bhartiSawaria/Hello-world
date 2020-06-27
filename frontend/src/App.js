@@ -25,7 +25,6 @@ class App extends Component{
   componentDidMount(){
     const token = localStorage.getItem('token');
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    console.log('Fetched from localstore', token, userDetails);
     if( token && userDetails ){
       this.props.setStatusToLogin(userDetails, token);
       this.props.history.push('/');

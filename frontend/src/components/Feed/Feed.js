@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import classes from './Feed.module.css';
 import Post from './Post/Post';
-import Spinner from '../Spinner/Spinner';
+import Spinner from '../Spinner2/Spinner2';
 
 class Feed extends Component{
 

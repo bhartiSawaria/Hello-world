@@ -54,7 +54,7 @@
 .MediaButton{
     padding: 0.8rem;
     margin: 0.5rem;
-    width: 48%;
+    width: 45%;
     cursor: pointer;
     border-radius: 5px;
     outline: none;
@@ -88,3 +88,23 @@
     border: 1.5px solid #ff5252;
     font-weight: bold;
 } */
+
+
+
+@media (max-width: 992px){
+    .RootContainer{
+        width: 70%;
+    }
+}
+
+@media (max-width: 768px){
+    .RootContainer{
+        width: 80%;
+    }
+}
+
+@media (max-width: 578px){
+    .RootContainer{
+        width: 90%;
+    }
+}

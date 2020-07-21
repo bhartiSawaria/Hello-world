@@ -1,7 +1,8 @@
 
+const { validationResult, Result } = require('express-validator/check');
+
 const User = require('../modals/user');
 const Post = require('../modals/post');
-const { use } = require('../routes/user');
 
 exports.getProfile = async (req, res, next) => {
     try{
@@ -11,7 +12,7 @@ exports.getProfile = async (req, res, next) => {
     }catch(err){
         const error = new Error(err);
         error.setStatus = 500;    
-        next(error);
+        return next(error);
     }
 }
 
@@ -54,20 +55,30 @@ exports.getProfile = async (req, res, next) => {
 //         })
 // }
 
-exports.postEditAccount = async (req, res, next) => {
-    try{
+
+exports.postEditAccount = (req, res, next) => {
+        const errors = validationResult(req);
+        if( !errors.isEmpty() ){
+            const err = new Error('Editing failed!');
+            err.data = errors.array(); 
+            console.log('Error occured in postEditAccount', errors);
+            throw err;
+        }
         const userId = req.userId;
-        const user = await User.findById(userId);
-        user.name = req.body.name;
-        user.username = req.body.username;
-        user.email = req.body.email;
-        const updatedUser = await user.save();
-        res.status(200).json({message: 'Account info updated successfully.', user: updatedUser})
-    }catch(err){
-        const error = new Error(err);
-        error.setStatus = 500;    
-        next(error);
-    }
+        User.findById(userId).then(user => {
+            user.name = req.body.name;
+            user.username = req.body.username;
+            user.email = req.body.email;
+            return user.save();
+        })
+        .then(user => {
+            res.status(200).json({message: 'Account info updated successfully.', user: user});
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.setStatus = err.status || 500;    
+            next(error);
+        })
 }
 
 exports.getPosts = async(req, res, next) => {
@@ -90,17 +101,46 @@ exports.getPosts = async(req, res, next) => {
     }catch(err){
         const error = new Error(err);
         error.setStatus = 500;    
-        next(error);
+        return next(error);
     }
 };
 
 exports.getUsers = async(req, res, next) => {
     try{
-        const users = await User.find();
+        const users = await User.find({_id: {$ne: req.userId}});
         res.status(200).json({message: 'Users successfully fetched from database.', users: users});
     }catch(err){
         const error = new Error(err);
         error.setStatus = 500;    
-        next(error); 
+        return next(error); 
     }
+}
+
+exports.changeProfilePic = (req, res, next) => {
+    console.log('Reached');
+    const userId = req.userId;
+    const image = req.file;
+    let imageUrl;
+    if(image){
+        imageUrl = image.path;
+    }
+    else{
+        imageUrl = req.body.imageUrl;
+    }
+
+    User.findById(userId)
+    .then(user => {
+        if(user){
+            user.imageUrl = imageUrl;
+            return user.save();
+        }
+    })
+    .then(user => {
+        res.status(200).json({message: 'Profile pic updated successfully', user: user});
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        return next(error); 
+    })
 }

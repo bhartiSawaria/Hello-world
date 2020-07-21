@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import classes from './SavedPosts.module.css';
 import SavedPost from './SavedPost/SavedPost';
-import Spinner from '../Spinner/Spinner';
+import Spinner from '../Spinner2/Spinner2';
 
 class SavedPosts extends Component{
 

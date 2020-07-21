@@ -6,12 +6,12 @@ import classes from './User.module.css';
 
 const user = (props) => {
     return (
-        <div className={classes.RootContainer}>
+        <div className={classes.RootContainer} onClick={props.clicked}>
             <div>
                 <img src={props.user.imageUrl} alt='profilePic'/> 
                 <p>{props.user.username}</p>
             </div>
-            <Button onClick={props.sendMessage}>Message</Button>
+            { props.sendMessage ? <Button onClick={props.sendMessage}>Message</Button> : null }
         </div>
     )
 };

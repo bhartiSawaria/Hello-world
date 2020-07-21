@@ -2,15 +2,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, Button} from 'semantic-ui-react';
+import mime from 'mime-types';
 
 import classes from './Profile.module.css';
-import Spinner from '../Spinner/Spinner';
+import Spinner from '../Spinner2/Spinner2';
 import Backdrop from '../Backdrop/Backdrop';
+import profilePic from '../../assets/images/user2.png';
 
 class Profile extends Component{
 
     state = {
         user: null,
+        image: null,
         isLoading: true,
         showBackdrop: false,
         isDelete: false,
@@ -21,7 +24,8 @@ class Profile extends Component{
             name: '',
             username: ''
         },
-        error: ''
+        error: '',
+        imageError: ''
     }
 
     componentDidMount(){
@@ -104,7 +108,8 @@ class Profile extends Component{
             body: JSON.stringify({
                 name: this.state.userInfo.name,
                 username: this.state.userInfo.username,
-                email: this.state.userInfo.email
+                email: this.state.userInfo.email,
+                id: this.props.user.id
             })
         })
         .then(result => {
@@ -112,20 +117,76 @@ class Profile extends Component{
         })
         .then(result => {
             console.log('Result is ', result);
-            this.setState({user: result.user,
-                userInfo: {
-                    name: result.user.name, 
-                    username: result.user.username, 
-                    email: result.user.email
-                },
-                isEditing: false
-            });
-            this.hideModalAndBackdrop();
+            let error = '';
+            if(result.data){
+                error = result.data[0].msg;
+                console.log('Error is set.', error);
+                this.setState({error: error, isEditing: false});
+            }
+            else{
+                this.setState({user: result.user,
+                    userInfo: {
+                        name: result.user.name, 
+                        username: result.user.username, 
+                        email: result.user.email
+                    },
+                    isEditing: false,
+                    error: error
+                });
+                this.hideModalAndBackdrop();
+            }     
         })
         .catch(err => {
             this.setState({isEditing: false});
             console.log('Error in editing account info', err);
         })
+    }
+
+    changeImageInputHandler = (event) => {
+        this.setState({imageError: ''});
+        this.setState({image: event.target.files[0]});
+    }
+
+    isMimeTypeValid = () => {
+        if(!this.state.image){
+            this.setState({imageError: 'Please select an image.'});
+            return false;
+        }
+        const supportedFiles = ['image/png', 'image/jpg', 'image/jpeg'];
+        const mimeType = mime.lookup(this.state.image.name);
+        const result = supportedFiles.includes(mimeType);
+        if( !result ){
+            this.setState({imageError: 'Supported image types are only jpg, png and jpeg.'})
+        }
+        return result;
+    }
+
+    proceedPicChangeHandler = () => {
+        if(this.isMimeTypeValid()){
+            this.setState({isEditing: true});
+            const formData = new FormData();
+            formData.append('image', this.state.image);
+            formData.append('imageUrl', profilePic);
+            fetch('http://localhost:8080/change-profile-pic', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Authorization: 'Bearer ' + this.props.token
+                }
+            })
+            .then(result => {
+                return result.json();
+            })
+            .then(result => {
+                console.log('Result ', result);
+                this.setState({user: result.user, isEditing: false});
+                this.hideModalAndBackdrop();
+            })
+            .catch(err => {
+                console.log('Error in changing profile pic', err);
+                this.setState({isEditing: false});
+            })
+        }
     }
 
     formInputChangeHandler = (event) => {
@@ -137,6 +198,11 @@ class Profile extends Component{
 
     render(){
 
+        let error = null;
+        if(this.state.error != ''){
+            error = <p style={{color: 'red'}}>{this.state.error}</p>
+        } 
+
         let backdrop = null;
         if(this.state.showBackdrop){
             backdrop = <Backdrop clicked={this.hideModalAndBackdrop}/>
@@ -146,17 +212,33 @@ class Profile extends Component{
         if(this.state.isDelete){
             modal = (
                 <div className={classes.Modal}>
-                    <p>Are you sure you want to delete your account?</p>
-                    <p>This action can not be undone.</p>
+                    <p style={{fontSize: '20px', marginBottom: '16px'}}>Choose a picture</p>
+                    <input 
+                        type='file' 
+                        onChange={this.changeImageInputHandler}
+                        style={{width: '100%', backgroundColor: '#eee', padding: '8px'}}/>
+                    <p style={{color: 'red'}}>{this.state.imageError}</p>
                     <Button 
                         loading={this.state.isEditing}
                         className={classes.EditButton} 
                         color='green'
-                        onClick={this.hideModalAndBackdrop}>
-                        Cancel
+                        onClick={this.proceedPicChangeHandler}>
+                        Proceed
                     </Button>
-                    <button className={classes.DeleteButton} onClick={this.proceedFinalDeleteHandler}>Delete</button>
+                    <button className={classes.DeleteButton} onClick={this.hideModalAndBackdrop}>Cancel</button>
                 </div>
+                // <div className={classes.Modal}>
+                //     <p>Are you sure you want to delete your account?</p>
+                //     <p>This action can not be undone.</p>
+                //     <Button 
+                //         loading={this.state.isEditing}
+                //         className={classes.EditButton} 
+                //         color='green'
+                //         onClick={this.hideModalAndBackdrop}>
+                //         Cancel
+                //     </Button>
+                //     <button className={classes.DeleteButton} onClick={this.proceedFinalDeleteHandler}>Delete</button>
+                // </div>
             )
         }
 
@@ -198,10 +280,10 @@ class Profile extends Component{
                         style={{marginBottom: '8px'}}
                         onChange={this.formInputChangeHandler}/>
 
-                    {/* {error} */}
+                    {error}
 
-                    <button className={classes.EditButton} onClick={this.proceedFinalEditHandler}>Edit</button>
-                    <button className={classes.DeleteButton} onClick={this.hideModalAndBackdrop}>Cancel</button>
+                    <Button className={classes.EditButton} onClick={this.proceedFinalEditHandler} loading={this.state.isEditing} color='green'>Edit</Button>
+                    <button className={classes.DeleteButton} style={{backgroundColor:'#ff5252', color:'#fff'}} onClick={this.hideModalAndBackdrop}>Cancel</button>
                 </div>
             )
         }
@@ -224,7 +306,7 @@ class Profile extends Component{
                             onClick={this.proceedInitialEditHandler}>Edit Details</button>
                         <button 
                             className={classes.DeleteButton}
-                            onClick={this.proceedInitialDeleteHandler}>Delete Account</button>
+                            onClick={this.proceedInitialDeleteHandler}>Change Profile Pic</button>
                     </React.Fragment>
                 ) }
             </div>
@@ -234,7 +316,8 @@ class Profile extends Component{
 
 const mapStateToProps = state => {
     return{
-        token: state.auth.token
+        token: state.auth.token,
+        user: state.auth.userDetails
     }
 }
 

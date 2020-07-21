@@ -2,7 +2,7 @@
 .RootContainer{
     margin: 25vh auto;
     width: 60%;
-    height: 60%;
+    /* height: 60%; */
     background-color: #d6d6d6;
     padding: 2rem;
 }

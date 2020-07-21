@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import classes from './Notifications.module.css';
-import Spinner from '../Spinner/Spinner';
+import Spinner from '../Spinner2/Spinner2';
 import Notification from './Notification/Notification';
 
 class Notifications extends Component{

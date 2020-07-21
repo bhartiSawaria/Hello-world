@@ -39,9 +39,7 @@ class ImagePost extends Component{
             return false;
         }
         const mimeType = mime.lookup(this.state.image.name);
-        console.log('Mimetype is', mimeType);
         const result = this.state.supportedFiles.includes(mimeType);
-        console.log('mime-type-result', result);
         if( !result ){
             this.setState({error: 'Supported image types are only jpg, png and jpeg.'})
         }

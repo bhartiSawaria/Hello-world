@@ -50,6 +50,7 @@ app.use(postRoutes);
 app.use(userRoutes);
 
 app.use((error, req, res, next) => {
+    console.log('Reached here');
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;

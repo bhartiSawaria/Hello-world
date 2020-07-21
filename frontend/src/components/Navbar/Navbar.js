@@ -4,7 +4,8 @@ import { NavLink, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import classes from './Navbar.module.css';
-import AppIcon from '../../assets/images/icon3.jpg';
+// import AppIcon from '../../assets/images/icon3.jpg';
+import AppIcon from '../../assets/images/appIcon.jpg';
 import { Icon } from 'semantic-ui-react';
 
 const onHamburgerMenuClick = () => {

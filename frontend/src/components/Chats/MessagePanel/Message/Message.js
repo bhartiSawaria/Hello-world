@@ -1,6 +1,5 @@
 
 import React from 'react';
-import moment from 'moment';
 
 import classes from './Message.module.css';
 
@@ -9,9 +8,10 @@ const getFormattedTime = (timestamp) => {
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let s = 'AM';
-    if(hours > 12){
-        hours = hours - 12;
-        s = 'PM'
+    if(hours >= 12){
+        s = 'PM';
+        if(hours > 12)
+            hours = hours - 12;
     }
     else if(hours < 10){
         hours = '0' + hours;

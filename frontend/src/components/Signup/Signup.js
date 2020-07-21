@@ -103,11 +103,14 @@ class Signup extends Component{
                 return result.json()
             })
             .then(result => {
+                console.log('Result ka data', result.data);
                 if( result.data ){
                     this.setState({error: result.data[0].msg});
                 }
+                else{
+                    this.props.history.push('/login');
+                }
                 console.log('result is', result);
-                this.props.history.push('/login');
             })
             .catch(err => {
                 this.setState({isLoading: false});

@@ -14,15 +14,19 @@
     height: 60%;
     width: 45%;
     background-color: #d6d6d6;
+    padding: 40px;
     margin: auto;
     cursor: pointer;
 }
 
 .PostType div{
-    height: 80%;
-    width: 80%;
+    height: 100%;
+    width: 100%;
     text-align: center;
-    margin: calc(20%/2) auto;
+    /* margin: calc(20%/2) auto; */
+    /* border: 40px solid #d6d6d6; */
+    margin: auto;
+    box-sizing: border-box;
     background-color: white;
 }
 

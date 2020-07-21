@@ -1,9 +1,12 @@
 
 import React, { Component } from 'react';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 import moment from 'moment';
+import {withRouter} from 'react-router-dom';
 
 import classes from './Post.module.css';
+import deleteIcon from '../../../assets/images/delete.png';
+import Backdrop from '../../Backdrop/Backdrop';
 
 class Post extends Component{
 
@@ -119,6 +122,7 @@ class Post extends Component{
 
     render(){
         let username = this.props.post.postedBy && this.props.post.postedBy.username;
+
         return (
             <div className={classes.RootContainer}>
                 <div className={classes.UsernameContainer}>
@@ -168,26 +172,35 @@ class Post extends Component{
                             onClick={this.likeIconClickHandler}/>
                     )}
 
-                    {this.props.post.isSaved ? (
-                        <Icon 
-                            name='bookmark' 
-                            size='big' 
-                            id={this.state.id + '-save-icon'} 
-                            style={{position: 'absolute', right: '0px'}} 
-                            onClick={this.saveIconClickHandler}/>
-                        ) : (
-                        <Icon 
-                            name='bookmark outline' 
-                            size='big' 
-                            id={this.state.id + '-save-icon'} 
-                            style={{position: 'absolute', right: '0px'}} 
-                            onClick={this.saveIconClickHandler}/>
-                    )}
+                    <div>
+                        {this.props.post.isSaved ? (
+                            <Icon 
+                                name='bookmark' 
+                                size='big' 
+                                id={this.state.id + '-save-icon'} 
+                                onClick={this.saveIconClickHandler}/>
+                            ) : (
+                            <Icon 
+                                name='bookmark outline' 
+                                size='big' 
+                                id={this.state.id + '-save-icon'} 
+                                onClick={this.saveIconClickHandler}/>
+                        )}
+                        {this.props.canDelete ? 
+                            <img 
+                                src={deleteIcon} 
+                                alt='delete' 
+                                style={{height: '30px', width: '30px'}}
+                                onClick={this.props.clickDelete}/>
+                            // <Icon name='trash alternate outline' size='big' />
+                            : null 
+                        }
+                    </div>
+                    
                 </div>
-                {/* <i className="far fa-heart"></i> */}
             </div>
         )
     }
 }
 
-export default Post;
+export default withRouter(Post);

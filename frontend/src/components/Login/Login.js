@@ -66,10 +66,9 @@ class Login extends Component{
                 }
                 else{
                     this.props.setStatusToLogin(result.userDetails, result.token);
-                    this.props.history.push('/');
+                    this.props.history.push('/feed');
                 }
-                // console.log('result is', result);
-            })
+            }) 
             .catch(err => {
                 this.setState({isLoading: false, isLogin: false});
                 console.log('Error in login frontend ', err)

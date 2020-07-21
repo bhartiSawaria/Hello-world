@@ -12,7 +12,7 @@ class MessagePanel extends Component{
         messagesRef: firebase.firestore().collection('messages'),
         path: this.props.path,
         allMessages: [],
-        isLoading: true
+        isLoading: false
     }
 
     sortByTime = (a, b) => {
@@ -25,14 +25,11 @@ class MessagePanel extends Component{
     componentDidMount(){
         const { messagesRef, path } = this.state;
         const [ path1, path2 ] = path.split('-');
-        messagesRef.doc(path1).collection(path2).onSnapshot(snap => {
-            const loadedMessages = [];
-            snap.forEach(s => {
-                let isOwn = s.data().from == this.props.sender.id ? true: false;
-                loadedMessages.push({data:s.data(), isOwn: isOwn});
-            })
-            loadedMessages.sort(this.sortByTime);
-            this.setState({allMessages: loadedMessages, isLoading: false});
+        messagesRef.doc(path).onSnapshot(snap => {
+            if(snap.exists){
+                console.log(snap.data());
+                this.setState({allMessages: snap.data().messages})
+            }
         })
     }
 
@@ -43,8 +40,9 @@ class MessagePanel extends Component{
         }
         else{
             messages = this.state.allMessages.map(msg => {
+                let isOwn = msg.sender == this.props.user.id ? true : false
                 return (
-                    <Message key={msg.data.timestamp} message={msg.data} isOwn={msg.isOwn}/>
+                    <Message key={msg.timestamp} message={msg} isOwn={isOwn}/>
                 )
             });
         }

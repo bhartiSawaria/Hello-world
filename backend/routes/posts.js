@@ -24,6 +24,8 @@ router.get('/notifications', isAuth, postControllers.getNotifications);
 
 router.delete('/notification', isAuth, postControllers.deleteNotification);
 
+router.delete('/delete-post', isAuth, postControllers.deletePost);
+
 // router.post('/add-post/type1', isAuth, postControllers.createTextPost);
 
 // router.post('/add-post/type2', isAuth, postControllers.createImagePost);

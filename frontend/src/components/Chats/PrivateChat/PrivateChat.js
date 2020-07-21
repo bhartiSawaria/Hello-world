@@ -23,15 +23,30 @@ class PrivateChat extends Component{
     sendTextMessageHandler = () => {
         this.setState({isLoading: true});
         const path = (this.props.match.params.path);
-        const [ path1, path2 ] = path.split('-');
         const { messagesRef } = this.state;
-        messagesRef.doc(path1).collection(path2).add({
-            content: this.state.message,
-            from: this.props.user.id,
-            timestamp: firebase.firestore.Timestamp.fromDate(new Date()),
+        messagesRef.doc(path).get().then(doc => {
+            if(doc.exists){
+                return messagesRef.doc(path).update({
+                    messages: firebase.firestore.FieldValue.arrayUnion({
+                        sender: this.props.user.id,
+                        content: this.state.message,
+                        timestamp: firebase.firestore.Timestamp.fromDate(new Date())
+                    })
+                })
+            }
+            else{
+                return messagesRef.doc(path).set({
+                    messages: firebase.firestore.FieldValue.arrayUnion({
+                        sender: this.props.user.id,
+                        content: this.state.message,
+                        timestamp: firebase.firestore.Timestamp.fromDate(new Date())
+                    })
+                })
+            }
         })
-        .then(doc => {
-            console.log('Msg Written successfully id = ', doc.id);
+      
+        .then((doc) => {
+            console.log('Msg Written successfully id = ', doc);
             this.setState({message: '', isLoading: false});
         })
         .catch(err => {
@@ -52,7 +67,7 @@ class PrivateChat extends Component{
                         <span>{receiver.name}</span>
                     </div>
                 </div>
-                <MessagePanel messages={this.state.allMessages} path={this.state.path} sender={sender}/>
+                <MessagePanel messages={this.state.allMessages} path={this.state.path} sender={sender} user={this.props.user}/>
                 <div className={classes.SendOptionsContainer}>
                     <Input 
                         type='text'

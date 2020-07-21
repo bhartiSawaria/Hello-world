@@ -62,18 +62,18 @@ exports.postLogin = (req, res, next) => {
     const password = req.body.password;
     let currentUser;
     User.findOne({email: email})
-            .then(user => {
-                currentUser = user;
-                const token = jwt.sign({
-                    email: email,
-                    userId: user._id
-                }, SECRET , { expiresIn: '10h'});
-            
-                res.status(200).json({token: token, userDetails: {id: currentUser._id, username: currentUser.username, imageUrl: currentUser.imageUrl}});
-            })
-            .catch(err => {
-                const error = new Error('Cannot find user!');
-                error.statusCode = 500;
-                throw error;
-            })
+        .then(user => {
+            currentUser = user;
+            const token = jwt.sign({
+                email: email,
+                userId: user._id
+            }, SECRET);
+        
+            res.status(200).json({token: token, userDetails: {id: currentUser._id, username: currentUser.username, imageUrl: currentUser.imageUrl}});
+        })
+        .catch(err => {
+            const error = new Error('Cannot find user!');
+            error.statusCode = 500;
+            throw error;
+        })
 }

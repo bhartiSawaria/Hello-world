@@ -16,6 +16,7 @@
     bottom: 120px;
     height: 200px;
     width: 200px;
+    border-radius: 50%;
 }
 
 .InfoContainer{
@@ -29,7 +30,7 @@
 
 .RootContainer button{
     padding: 0.8rem;
-    margin: 1rem 0.5rem;
+    margin: 1rem 3px;
     cursor: pointer;
     border-radius: 5px;
     outline: none;

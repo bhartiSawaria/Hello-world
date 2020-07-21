@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 import classes from './Chats.module.css';
 import User from './User/User';
 import Spinner from '../Spinner2/Spinner2';
+import firebase from '../../firebase';
+
+let count = 0;
 
 const selectCategoryHandler = () => {
     console.log('Clicked');
@@ -28,13 +31,16 @@ class Chats extends Component{
 
     state = {
         users: [],
-        isLoading: false
+        isLoading: true,
+        messagesRef: firebase.firestore().collectionGroup('messages'),
+        contactedUsers: []
     }
 
-    findPeopleClickHandler = () => {
-        selectCategoryHandler();
-        this.setState({isLoading: true});
-        console.log('reached here');
+    componentDidMount(){
+        const currentUserId = this.props.user.id;
+        const { messagesRef, contactedUsers } = this.state;
+        let loadedUsers = [];
+
         fetch('http://localhost:8080/users', {
             method: 'GET',
             headers: {
@@ -42,18 +48,35 @@ class Chats extends Component{
             }
         })
         .then(result => {
-            console.log('Result 1', result);
             return result.json();
         })
         .then(result => {
-            console.log('Result 2', result);
+            console.log('Result', result);
             console.log(result.users);
-            this.setState({users: result.users, isLoading: false});
+            this.setState({users: result.users});
+            return messagesRef.get();
+        })
+        .then(doc => {
+            const {users} = this.state;
+            doc.forEach(d => {
+                let docId = d.id;
+                let id = docId.split('-');
+                if( id[0] == currentUserId || id[1] == currentUserId){
+                    let contactedUserId = id[0] == currentUserId ? id[1] : id[0];
+                    let contactedUser = users.find(user => user._id == contactedUserId);
+                    loadedUsers.push(contactedUser);
+                }
+            })
+            this.setState({contactedUser: loadedUsers, isLoading: false});
         })
         .catch(err => {
             console.log('Error in Chats component', err);
             this.setState({isLoading: false});
         })
+    }
+
+    findPeopleClickHandler = () => {
+        selectCategoryHandler();
     }
 
     getId = (id1, id2) => {
@@ -76,10 +99,22 @@ class Chats extends Component{
             return(
                 <User key={user._id} user={user} sendMessage={() => this.sendMessageHandler(user)}/>
             )
-        })
+        });
+
+        let loadedUsers = this.state.contactedUser && this.state.contactedUser.map(user => {
+            count += 1;
+            return(
+                <User key={user._id} user={user} clicked={() => this.sendMessageHandler(user)}/>
+            )
+        });
+
+        if(count === 0){
+            loadedUsers = <p className={classes.NoChat}>No recent chats</p>
+        }
 
         if(this.state.isLoading){
             users = <Spinner />
+            loadedUsers = <Spinner />
         }
         return(
             <div className={classes.RootContainer}>
@@ -95,10 +130,10 @@ class Chats extends Component{
                 </div>
                 <div 
                     className={[classes.ChatsContainer, classes.DisplayContainer].join(' ')}
-                    id='chats-container'>ChatsContainer</div>
+                    id='chats-container'>{loadedUsers}</div>
                 <div 
                     className={[classes.UsersContainer, classes.HideContainer].join(' ')}
-                id='users-container'>{users}</div>
+                    id='users-container'>{users}</div>
             </div>
         )
     }

@@ -293,6 +293,19 @@ exports.deleteNotification = (req, res, next) => {
     })
 }
 
+exports.deletePost = (req, res, next) => {
+    const postId = req.body.postId;
+    Post.findByIdAndDelete(postId)
+    .then(result => {
+        res.status(200).json({message: 'Post deleted successfully.'});
+    })
+    .catch(err => {
+        const error = new Error(err);
+        error.setStatus = 500;    
+        next(error);  
+    })
+}
+
 // exports.createTextPost = (req, res, next) => {
 //     let title = '';
 //     if(req.body.title){

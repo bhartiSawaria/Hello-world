@@ -35,19 +35,28 @@ class Notifications extends Component{
         .catch(err => {
             console.log('Error in notifications component', err);
             this.setState({isLoading: false});
+            this.props.history.push('/error');
         })
     }
 
     render(){
-        let notifications = this.state.notifications.map(notification => {
+
+        let notifications = null;
+        notifications = this.state.notifications.map(notification => {
             return <Notification key={notification._id} message={notification.message} id={notification._id} token={this.props.token}/>
         });
+
+        if(this.state.notifications.length === 0){
+            notifications = <p style={{fontSize: '16px'}}>No new notifications</p>
+        }
 
         if(this.state.isLoading){
             notifications = <Spinner />
         }
         return(
             <div className={classes.RootContainer}>
+                <p className={classes.MainHeader}>Notifications</p>
+                <hr/>
                 {notifications}
             </div>
         )

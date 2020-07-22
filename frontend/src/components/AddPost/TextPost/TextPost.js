@@ -51,6 +51,7 @@ class TextPost extends Component{
             .catch(err => {
                 console.log('Error in PostType1', err);
                 this.setState({isLoading: false});
+                this.props.history.push('/error');
             })
         }
     }
@@ -58,7 +59,7 @@ class TextPost extends Component{
     render(){
         return(
             <div className={classes.RootContainer}>
-                <h2>Share your thoughts</h2>
+                <h2>Share your views</h2>
                 <div className={classes.InputField}>
                     <input 
                         type='text' 

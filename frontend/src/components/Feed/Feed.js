@@ -41,6 +41,7 @@ class Feed extends Component{
         .catch(err => {
             console.log('Error in feed', err);
             this.setState({isLoading: false});
+            this.props.history.push('/error');
         })
     }
 

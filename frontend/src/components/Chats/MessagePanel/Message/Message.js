@@ -27,7 +27,8 @@ const message = (props) => {
     let messageClass = props.isOwn ? classes.RootContainerRight : classes.RootContainerLeft;
     return(
         <div className={messageClass}>
-            <p>{props.message.content}<br/> <span>{time}</span></p>
+            {props.message.content ? <p>{props.message.content}<br/> <span>{time}</span></p>: null}
+            {props.message.imageUrl ?<div><img className={classes.Image} src={props.message.imageUrl} alt='img'/><br/><span>{time}</span></div>: null}
         </div>     
     )
 };

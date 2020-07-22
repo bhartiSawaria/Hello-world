@@ -27,6 +27,7 @@ class Notification extends Component{
         })
         .catch(err => {
             console.log('Error in deleting a notification', err);
+            this.props.history.push('/error');
         })
     }
 

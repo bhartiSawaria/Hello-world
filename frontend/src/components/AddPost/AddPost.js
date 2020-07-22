@@ -14,12 +14,12 @@ class AddPost extends Component{
             <div className={classes.Rootcontainer}>
                 <div className={classes.PostType} onClick={() => this.clickPostTypeHandler(1)}>
                     <div>
-                        Share your thoughts
+                        <p>Share your views</p>
                     </div>
                 </div>
                 <div className={classes.PostType} onClick={() => this.clickPostTypeHandler(2)}>
                     <div>
-                        Share images with captions
+                        <p>Share images </p>
                     </div>
                 </div>
             </div>

@@ -28,7 +28,7 @@ class MessagePanel extends Component{
         messagesRef.doc(path).onSnapshot(snap => {
             if(snap.exists){
                 console.log(snap.data());
-                this.setState({allMessages: snap.data().messages})
+                this.setState({allMessages: snap.data().messages});
             }
         })
     }

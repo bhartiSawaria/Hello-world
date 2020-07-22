@@ -81,6 +81,16 @@
     color: white;
 }
 
+.Modal{
+    margin: 15vh auto;
+    position: fixed;
+    width: 50%;
+    z-index: 20;
+    background-color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
 /* .MediaButton:hover,
 .MediaButton:active{
     background-color: white;
@@ -95,16 +105,24 @@
     .RootContainer{
         width: 70%;
     }
+
+    .Modal{
+        width: 60%;
+    }
 }
 
 @media (max-width: 768px){
     .RootContainer{
         width: 80%;
     }
+
+    .Modal{
+        width: 80%;
+    }
 }
 
 @media (max-width: 578px){
-    .RootContainer{
+    .RootContainer, .Modal{
         width: 90%;
     }
 }

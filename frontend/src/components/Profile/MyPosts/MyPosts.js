@@ -33,7 +33,6 @@ class MyPosts extends Component{
     showModalHandler = () => this.setState({showModal: true}); 
 
     componentDidMount(){
-        console.log('CDMount');
         this.fetchPostsFromDatabase();
     }
 
@@ -56,6 +55,7 @@ class MyPosts extends Component{
         .catch(err => {
             console.log('Error in MyPosts', err);
             this.setState({isLoading: false});
+            this.props.history.push('/error');
         })
     }
 
@@ -91,6 +91,7 @@ class MyPosts extends Component{
         .catch(err => {
             this.setState({isDeleting: false});
             console.log('Error in deleting post', err);
+            this.props.history.push('/error');
         })
     }
 

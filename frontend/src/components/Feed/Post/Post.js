@@ -6,7 +6,6 @@ import {withRouter} from 'react-router-dom';
 
 import classes from './Post.module.css';
 import deleteIcon from '../../../assets/images/delete.png';
-import Backdrop from '../../Backdrop/Backdrop';
 
 class Post extends Component{
 
@@ -40,6 +39,7 @@ class Post extends Component{
             })
             .catch(err => {
                 console.log('Error in like-post', err);
+                this.props.history.push('/error');
             })
         }
         else{
@@ -64,6 +64,7 @@ class Post extends Component{
             })
             .catch(err => {
                 console.log('Error in unlike-post', err);
+                this.props.history.push('/error');
             })
         }
     }
@@ -93,6 +94,7 @@ class Post extends Component{
             })
             .catch(err => {
                 console.log('Error in saving a post', err);
+                this.props.history.push('/error');
             })
         }
         else{
@@ -116,6 +118,7 @@ class Post extends Component{
             })
             .catch(err => {
                 console.log('Error in removing a saved post', err);
+                this.props.history.push('/error');
             })
         }
     }

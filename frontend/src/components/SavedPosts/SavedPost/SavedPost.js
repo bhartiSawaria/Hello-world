@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import classes from './SavedPost.module.css';
 import { Icon } from 'semantic-ui-react';
@@ -37,6 +38,7 @@ class SavedPost extends Component{
             })
             .catch(err => {
                 console.log('Error in like-post', err);
+                this.props.history.push('/error');
             })
         }
         else{
@@ -61,6 +63,7 @@ class SavedPost extends Component{
             })
             .catch(err => {
                 console.log('Error in unlike-post', err);
+                this.props.history.push('/error');
             })
         }
     }
@@ -90,6 +93,7 @@ class SavedPost extends Component{
             })
             .catch(err => {
                 console.log('Error in saving a post', err);
+                this.props.history.push('/error');
             })
         }
         else{
@@ -113,6 +117,7 @@ class SavedPost extends Component{
             })
             .catch(err => {
                 console.log('Error in removing a saved post', err);
+                this.props.history.push('/error');
             })
         }
     }
@@ -189,4 +194,4 @@ class SavedPost extends Component{
     }
 };
 
-export default SavedPost;
+export default withRouter(SavedPost);

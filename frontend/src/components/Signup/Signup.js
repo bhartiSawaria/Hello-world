@@ -114,7 +114,8 @@ class Signup extends Component{
             })
             .catch(err => {
                 this.setState({isLoading: false});
-                console.log('Error in signup frontend ', err)
+                console.log('Error in signup frontend ', err);
+                this.props.history.push('/error');
             });
         }
     }

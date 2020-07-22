@@ -45,6 +45,7 @@ class Profile extends Component{
         .catch(err => {
             console.log('Error in Profile', err);
             this.setState({isLoading: false});
+            this.props.history.push('/error');
         })
     }
 
@@ -92,6 +93,7 @@ class Profile extends Component{
         })
         .catch(err => {
             console.log('Error in deleting account', err);
+            this.props.history.push('/error');
             // this.setState({isLoading: false});
         })
         
@@ -139,6 +141,7 @@ class Profile extends Component{
         .catch(err => {
             this.setState({isEditing: false});
             console.log('Error in editing account info', err);
+            this.props.history.push('/error');
         })
     }
 
@@ -185,6 +188,7 @@ class Profile extends Component{
             .catch(err => {
                 console.log('Error in changing profile pic', err);
                 this.setState({isEditing: false});
+                this.props.history.push('/error');
             })
         }
     }

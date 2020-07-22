@@ -10,7 +10,6 @@ import firebase from '../../firebase';
 let count = 0;
 
 const selectCategoryHandler = () => {
-    console.log('Clicked');
     const chats = document.getElementById('chats');
     const search = document.getElementById('search');
     const chatsContainer = document.getElementById('chats-container');
@@ -72,6 +71,7 @@ class Chats extends Component{
         .catch(err => {
             console.log('Error in Chats component', err);
             this.setState({isLoading: false});
+            this.props.history.push('/error');
         })
     }
 

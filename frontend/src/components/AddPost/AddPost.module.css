@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap');
+
 .Rootcontainer{
     display: flex;
     width: 80%;
@@ -14,20 +16,29 @@
     height: 60%;
     width: 45%;
     background-color: #d6d6d6;
-    padding: 40px;
+    padding: 16px;
     margin: auto;
     cursor: pointer;
+    background: url('../../assets/images/homepagePic1.jpg');
+    background-position: center;
+    background-size: cover;
 }
 
 .PostType div{
     height: 100%;
     width: 100%;
     text-align: center;
-    /* margin: calc(20%/2) auto; */
-    /* border: 40px solid #d6d6d6; */
     margin: auto;
     box-sizing: border-box;
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.PostType p{
+    font-family: 'Tangerine', cursive;
+    font-size: 42px;
+    display: inline-block;
+    margin: 30% auto;
 }
 
 @media (max-width: 992px) {

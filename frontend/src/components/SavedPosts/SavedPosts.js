@@ -41,6 +41,7 @@ class SavedPosts extends Component{
         .catch(err => {
             console.log('Error in saved-posts', err);
             this.setState({isLoading: false});
+            this.props.history.push('/error');
         })
     }
 
@@ -49,11 +50,17 @@ class SavedPosts extends Component{
             return <SavedPost key={post._id} post={post} token={this.props.token}/>
         });
 
+        if(this.state.posts.length === 0){
+            posts = <p style={{fontSize: '16px'}}>You have not saved any post.</p>
+        }
+
         if(this.state.isLoading){
             posts = <Spinner />
         }
         return(
             <div className={classes.RootContainer}>
+                <p style={{fontSize: '24px'}}>Saved Posts</p>
+                <hr/>
                 {posts}
             </div>
         )

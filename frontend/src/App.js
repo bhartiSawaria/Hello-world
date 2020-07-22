@@ -19,6 +19,7 @@ import Profile from './components/Profile/Profile';
 import MyPosts from './components/Profile/MyPosts/MyPosts';
 import Chats from './components/Chats/Chats';
 import PrivateChat from './components/Chats/PrivateChat/PrivateChat';
+import Error from './components/Error/Error';
 
 class App extends Component{
 
@@ -53,7 +54,8 @@ class App extends Component{
             {this.props.isAuth ? <Route exact path='/chats' component={Chats}/> : null } 
             {this.props.isAuth ? <Route exact path='/chats/private/:path' component={PrivateChat}/> : null } 
             {this.props.isAuth ? <Route exact path='/saved-posts' component={SavedPosts}/> : null }
-            {this.props.isAuth ? <Route exact path='/notifications' component={Notifications}/> : null }  
+            {this.props.isAuth ? <Route exact path='/notifications' component={Notifications}/> : null } 
+            <Route exact path='/error' component={Error}/> 
             <Route path='/' component={HomePage} />
           </Switch>
         </div>

@@ -74,6 +74,7 @@ class ImagePost extends Component{
             .catch(err => {
                 console.log(err);
                 this.setState({isLoading: false});
+                this.props.history.push('/error');
             })
         }
     }
